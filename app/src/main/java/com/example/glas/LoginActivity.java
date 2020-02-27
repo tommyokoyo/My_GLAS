@@ -8,20 +8,21 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
-public class MainActivity extends AppCompatActivity {
-    private Button btn_register;
-    private TextView link_signin;
+public class LoginActivity extends AppCompatActivity {
+    private Button btn_login;
+    private TextView link_signup;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_login);
 
-        link_signin = findViewById(R.id.link_signin);
-        link_signin.setOnClickListener(new View.OnClickListener() {
+        link_signup = findViewById(R.id.link_signup);
+
+        link_signup.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startActivity(new Intent( MainActivity.this, LoginActivity.class));
+                startActivity(new Intent(LoginActivity.this, MainActivity.class));
             }
         });
     }
