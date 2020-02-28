@@ -8,24 +8,54 @@
     android:paddingLeft="30dp"
     android:paddingRight="30dp"
     android:paddingTop="80dp"
+    android:background="@color/colorBackground"
     tools:context=".MainActivity"
-    android:background="@color/colorBackground">
+    >
 
     <ImageView
         android:id="@+id/logo"
         android:layout_width="match_parent"
         android:layout_height="50dp"
-        android:layout_marginBottom="50dp"
+        android:layout_marginBottom="30dp"
         android:src="@mipmap/logo" />
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/layoutname"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/logo"
+        android:hint="Name"
+        app:hintTextColor="@color/colorButton"
+        android:focusedByDefault="true">
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/name"
+            android:inputType="textPersonName"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"/>
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/layoutadmission"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/layoutname"
+        android:hint="Admission No"
+        app:hintTextColor="@color/colorButton">
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/admission"
+            android:inputType="textCapWords"
+            android:textColor="@color/colorText"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"/>
+    </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/layoutemail"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/logo"
+        android:layout_below="@+id/layoutadmission"
         android:hint="Email"
-        app:hintTextColor="@color/colorButton"
-        android:focusedByDefault="true">
+        app:hintTextColor="@color/colorButton">
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/email"
             android:inputType="textEmailAddress"
@@ -59,22 +89,22 @@
         android:layout_below="@+id/layoutpassword"/>
 
     <Button
-        android:id="@+id/btn_signin"
+        android:id="@+id/btn_signup"
         android:backgroundTint="@color/colorButton"
         android:textColor="@color/colorButtonText"
-        android:text="Sign In"
+        android:text="Sign UP"
         android:layout_marginTop="38dp"
         android:layout_width="match_parent"
         android:layout_below="@+id/loading"
         android:layout_height="55dp"/>
 
     <TextView
-        android:id="@+id/link_signup"
+        android:id="@+id/link_signin"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/btn_signin"
+        android:layout_below="@+id/btn_signup"
         android:layout_marginTop="10dp"
         android:gravity="center_horizontal"
-        android:text="Don't have an account, SIGN UP"/>
+        android:text="Have an account, SIGN IN"/>
 
 </RelativeLayout>

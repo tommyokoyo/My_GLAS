@@ -19,16 +19,16 @@
         android:src="@mipmap/logo" />
 
     <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/layoutemail"
+        android:id="@+id/layoutadmission"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/logo"
-        android:hint="Email"
+        android:hint="Admission No"
         app:hintTextColor="@color/colorButton"
         android:focusedByDefault="true">
         <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/email"
-            android:inputType="textEmailAddress"
+            android:id="@+id/admission"
+            android:inputType="textCapWords"
             android:textColor="@color/colorText"
             android:layout_width="match_parent"
             android:layout_height="match_parent"/>
@@ -38,7 +38,7 @@
         android:id="@+id/layoutpassword"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/layoutemail"
+        android:layout_below="@+id/layoutadmission"
         app:passwordToggleEnabled="true"
         android:hint="Password"
         app:hintTextColor="@color/colorButton">
