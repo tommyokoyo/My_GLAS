@@ -18,11 +18,19 @@ public class LoginActivity extends AppCompatActivity {
         setContentView(R.layout.activity_login);
 
         link_signup = findViewById(R.id.link_signup);
+        btn_login = findViewById(R.id.btn_signin);
 
         link_signup.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 startActivity(new Intent(LoginActivity.this, MainActivity.class));
+            }
+        });
+
+        btn_login.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(LoginActivity.this, TeacherDashboard.class));
             }
         });
     }

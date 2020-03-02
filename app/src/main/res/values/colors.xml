@@ -7,4 +7,8 @@
     <color name="colorText">#8b8989</color>
     <color name="colorButtonText">#d7d7d7</color>
     <color name="colorButton">#8a8a8a</color>
+    <color name="colorCardback">#fafafa</color>
+    <color name="coloryell"> #ffff00</color>
+    <color name="colorgreen"> #a4c639</color>
+    <color name="colorpink">#FFC0CB</color>
 </resources>

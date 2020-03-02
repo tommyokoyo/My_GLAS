@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "260712027555",
+    "firebase_url": "https://glas-73632.firebaseio.com",
+    "project_id": "glas-73632",
+    "storage_bucket": "glas-73632.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:260712027555:android:552aceeda072a463923616",
+        "android_client_info": {
+          "package_name": "com.example.glas"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "260712027555-7qnguf37kdm17i97ic1itso30gl7j0gn.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.glas",
+            "certificate_hash": "a5e3866161fc79ce337c4210de36768e97c79600"
+          }
+        },
+        {
+          "client_id": "260712027555-hdm50v3fa2gmeam1u067907vjqefmdpb.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB8hrFE62qDB7rJ0UECeXS3RQH9yBrJ28A"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "260712027555-hdm50v3fa2gmeam1u067907vjqefmdpb.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -38,6 +38,7 @@
         android:id="@+id/layoutadmission"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
         android:layout_below="@+id/layoutname"
         android:hint="Admission No"
         app:hintTextColor="@color/colorButton">
@@ -53,6 +54,7 @@
         android:id="@+id/layoutemail"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
         android:layout_below="@+id/layoutadmission"
         android:hint="Email"
         app:hintTextColor="@color/colorButton">
@@ -68,6 +70,7 @@
         android:id="@+id/layoutpassword"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
         android:layout_below="@+id/layoutemail"
         app:passwordToggleEnabled="true"
         android:hint="Password"
