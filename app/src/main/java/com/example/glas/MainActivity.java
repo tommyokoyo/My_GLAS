@@ -14,18 +14,30 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.volley.AuthFailureError;
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.net.URL;
+import java.util.HashMap;
+import java.util.Map;
+
 public class MainActivity extends AppCompatActivity {
-    private Button btn_register;
     private TextView link_signin;
-    EditText mname, memail, mpassword;
-    Button msignup;
+    EditText name, email, password;
+    Button btn_signup;
     ProgressBar loading;
-    FirebaseAuth fAuth;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,11 +45,10 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
 
-        mname = findViewById(R.id.name);
-        memail = findViewById(R.id.email);
-        mpassword = findViewById(R.id.password);
-        msignup = findViewById(R.id.btn_signup);
-        fAuth = FirebaseAuth.getInstance();
+        name = findViewById(R.id.name);
+        email = findViewById(R.id.email);
+        password = findViewById(R.id.password);
+        btn_signup = findViewById(R.id.btn_signup);
         loading = findViewById(R.id.loading);
 
         link_signin = findViewById(R.id.link_signin);
@@ -48,46 +59,61 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        if (fAuth.getCurrentUser() != null){
-            startActivity(new Intent(MainActivity.this, TeacherDashboard.class));
-            finish();
-        }
 
-
-        msignup.setOnClickListener(new View.OnClickListener() {
+        btn_signup.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                String email = memail.getText().toString().trim();
-                String password = mpassword.getText().toString().trim();
-
-                if (TextUtils.isEmpty(email)){
-                    memail.setError("Email s required.");
-                    return;
-                }
-                if (TextUtils.isEmpty(password)){
-                    mpassword.setError("Password is required");
-                    return;
-                }
-                if (password.length() < 6){
-                    mpassword.setError("Password must be more than 6 characters");
-                    return;
-                }
-
-                loading.setVisibility(view.VISIBLE);
-
-                fAuth.createUserWithEmailAndPassword(email,password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
-                    @Override
-                    public void onComplete(@NonNull Task<AuthResult> task) {
-                        if (task.isSuccessful()){
-                            Toast.makeText(MainActivity.this,"SignUp successful",Toast.LENGTH_SHORT).show();
-                            startActivity(new Intent(MainActivity.this,TeacherDashboard.class));
-                        } else {
-                            Toast.makeText(MainActivity.this,"SignUP not successful",Toast.LENGTH_SHORT).show();
-                        }
-                    }
-                });
+                Regist();
             }
         });
 
+    }
+
+    private void Regist(){
+        loading.setVisibility(View.VISIBLE);
+        btn_signup.setVisibility(View.GONE);
+
+        final String name = this.name.getText().toString().trim();
+        final String email = this.email.getText().toString().trim();
+        final String password = this.password.getText().toString().trim();
+
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, URLs.URL_REGISTER, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                try {
+                    JSONObject jsonObject = new JSONObject(response);
+                    String success = jsonObject.getString("success");
+
+                    if (success.equals("1")){
+                        Toast.makeText(MainActivity.this,"Register Success",Toast.LENGTH_SHORT).show();
+                    }
+                }catch (JSONException e){
+                    e.printStackTrace();
+                    Toast.makeText(MainActivity.this,"Register Error" +e.toString(),Toast.LENGTH_SHORT).show();
+                    loading.setVisibility(View.GONE);
+                    btn_signup.setVisibility(View.VISIBLE);
+                }
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Toast.makeText(MainActivity.this,"Register Error" +error.toString(),Toast.LENGTH_SHORT).show();
+                loading.setVisibility(View.GONE);
+                btn_signup.setVisibility(View.VISIBLE);
+            }
+        })
+        {
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String, String> params = new HashMap<>();
+                getParams().put("name", name);
+                getParams().put("email", email);
+                getParams().put("password", password);
+                return params;
+            }
+        };
+
+        RequestQueue requestQueue = Volley.newRequestQueue(this);
+        requestQueue.add(stringRequest);
     }
 }
