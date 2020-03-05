@@ -31,14 +31,12 @@ public class LoginActivity extends AppCompatActivity {
     private ProgressBar loading;
     private Button btn_login;
     private TextView link_signup;
-    SessionManager sessionManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
-        sessionManager = new SessionManager(this);
 
         loading = findViewById(R.id.loading);
         email = findViewById(R.id.email);
@@ -56,76 +54,10 @@ public class LoginActivity extends AppCompatActivity {
         btn_login.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                String mEmail = email.getText().toString().trim();
-                String mpass = password.getText().toString().trim();
 
-                if (!mEmail.isEmpty() || !mpass.isEmpty()){
-                    Login(mEmail, mpass);
-                }else{
-                    email.setError("please insert email");
-                    password.setError("please insert password");
-                }
             }
         });
     }
 
-    private void Login (final String email, final String password){
-        loading.setVisibility(View.VISIBLE);
-        btn_login.setVisibility(View.GONE);
-
-        StringRequest stringRequest = new StringRequest(Request.Method.POST, URLs.URL_LOGIN, new Response.Listener<String>() {
-            @Override
-            public void onResponse(String response) {
-
-                try {
-                    JSONObject jsonObject = new JSONObject(response);
-                    String success = jsonObject.getString("success");
-                    JSONArray jsonArray = jsonObject.getJSONArray("login");
-                    if (success.equals("1")){
-                        for (int i = 0; i < jsonArray.length(); i++){
-
-                            JSONObject object = jsonArray.getJSONObject(i);
-
-                            String name = object.getString("name").trim();
-                            String email = object.getString("email").trim();
-
-                            Toast.makeText(LoginActivity.this,"Login success.",Toast.LENGTH_SHORT).show();
-                            loading.setVisibility(View.GONE);
-
-                            sessionManager.createSession(name, email);
-
-                            Intent intent = new Intent(LoginActivity.this, TeacherDashboard.class);
-                            intent.putExtra("name", name);
-                            intent.putExtra("email", email);
-                            startActivity(intent);
-
-                        }
-                    }
-
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                    loading.setVisibility(View.GONE);
-                    btn_login.setVisibility(View.VISIBLE);
-                    Toast.makeText(LoginActivity.this,"Error." +e.toString(),Toast.LENGTH_SHORT).show();
-                }
-            }
-        }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                Toast.makeText(LoginActivity.this,"Error." + error.toString(),Toast.LENGTH_SHORT).show();
-            }
-        })
-        {
-            @Override
-            protected Map<String, String> getParams() throws AuthFailureError {
-                Map<String, String> params = new HashMap<>();
-                params.put("email", email);
-                params.put("password", password);
-                return super.getParams();
-            }
-        };
-        RequestQueue requestQueue = Volley.newRequestQueue(this);
-        requestQueue.add(stringRequest);
-    }
 
 }

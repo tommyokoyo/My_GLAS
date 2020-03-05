@@ -34,8 +34,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class MainActivity extends AppCompatActivity {
-    private TextView link_signin;
-    EditText name, email, password;
+    TextView link_signin;
+    EditText etname, etemail, etpassword;
     Button btn_signup;
     ProgressBar loading;
 
@@ -44,10 +44,16 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        //if the user is already logged in we will directly start the profile activity
+        if (SharedPrefManager.getInstance(this).isLoggedIn()) {
+            finish();
+            startActivity(new Intent(this, TeacherDashboard.class));
+            return;
+        }
 
-        name = findViewById(R.id.name);
-        email = findViewById(R.id.email);
-        password = findViewById(R.id.password);
+        etname = findViewById(R.id.etname);
+        etemail = findViewById(R.id.etemail);
+        etpassword = findViewById(R.id.etpassword);
         btn_signup = findViewById(R.id.btn_signup);
         loading = findViewById(R.id.loading);
 
@@ -58,7 +64,6 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(new Intent( MainActivity.this, LoginActivity.class));
             }
         });
-
 
         btn_signup.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -73,20 +78,59 @@ public class MainActivity extends AppCompatActivity {
         loading.setVisibility(View.VISIBLE);
         btn_signup.setVisibility(View.GONE);
 
-        final String name = this.name.getText().toString().trim();
-        final String email = this.email.getText().toString().trim();
-        final String password = this.password.getText().toString().trim();
+        final String name = this.etname.getText().toString().trim();
+        final String email = this.etemail.getText().toString().trim();
+        final String password = this.etpassword.getText().toString().trim();
+
+        if (TextUtils.isEmpty(name)){
+            etname.setError("Enter username");
+            etname.requestFocus();
+            return;
+        }
+        if (TextUtils.isEmpty(email)){
+            etemail.setError("Enter email");
+            etemail.requestFocus();
+            return;
+        }
+        if (!android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
+            etemail.setError("Enter a valid email");
+            etemail.requestFocus();
+            return;
+        }
+        if (TextUtils.isEmpty(password)){
+            etpassword.setError("Enter password");
+            etpassword.requestFocus();
+            return;
+        }
 
         StringRequest stringRequest = new StringRequest(Request.Method.POST, URLs.URL_REGISTER, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
                 try {
-                    JSONObject jsonObject = new JSONObject(response);
-                    String success = jsonObject.getString("success");
+                    JSONObject obj = new JSONObject(response);
 
-                    if (success.equals("1")){
-                        Toast.makeText(MainActivity.this,"Register Success",Toast.LENGTH_SHORT).show();
+                    if (!obj.getBoolean("error")){
+                        Toast.makeText(MainActivity.this, obj.getString("message"),Toast.LENGTH_SHORT).show();
+
+                        //getting the user from the response
+                        JSONObject userJson = obj.getJSONObject("user");
+
+                        //creating a new user object
+                        User user = new User(
+                                userJson.getString("name"),
+                                userJson.getString("email")
+                        );
+
+                        //storing the user in shared preferences
+                        SharedPrefManager.getInstance(getApplicationContext()).userLogin(user);
+
+                        //starting the profile activity
+                        finish();
+                        startActivity(new Intent(MainActivity.this, TeacherDashboard.class));
+                    } else {
+                        Toast.makeText(getApplicationContext(), obj.getString("message"), Toast.LENGTH_SHORT).show();
                     }
+
                 }catch (JSONException e){
                     e.printStackTrace();
                     Toast.makeText(MainActivity.this,"Register Error" +e.toString(),Toast.LENGTH_SHORT).show();
@@ -113,7 +157,6 @@ public class MainActivity extends AppCompatActivity {
             }
         };
 
-        RequestQueue requestQueue = Volley.newRequestQueue(this);
-        requestQueue.add(stringRequest);
+        VolleySingleton.getInstance(this).addToRequestQueue(stringRequest);
     }
 }
