@@ -27,7 +27,7 @@
         app:hintTextColor="@color/colorButton"
         android:focusedByDefault="true">
         <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/email"
+            android:id="@+id/etemail"
             android:inputType="textEmailAddress"
             android:textColor="@color/colorButton"
             android:layout_width="match_parent"
@@ -44,7 +44,7 @@
         android:hint="Password"
         app:hintTextColor="@color/colorButton">
         <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/password"
+            android:id="@+id/etpassword"
             android:inputType="textPassword"
             android:textColor="@color/colorButton"
             android:layout_width="match_parent"

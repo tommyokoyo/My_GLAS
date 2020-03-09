@@ -44,13 +44,6 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        //if the user is already logged in we will directly start the profile activity
-        if (SharedPrefManager.getInstance(this).isLoggedIn()) {
-            finish();
-            startActivity(new Intent(this, TeacherDashboard.class));
-            return;
-        }
-
         etname = findViewById(R.id.etname);
         etemail = findViewById(R.id.etemail);
         etpassword = findViewById(R.id.etpassword);
@@ -68,13 +61,13 @@ public class MainActivity extends AppCompatActivity {
         btn_signup.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Regist();
+                regist();
             }
         });
 
     }
 
-    private void Regist(){
+    private void regist(){
         loading.setVisibility(View.VISIBLE);
         btn_signup.setVisibility(View.GONE);
 
@@ -103,39 +96,27 @@ public class MainActivity extends AppCompatActivity {
             return;
         }
 
+        RequestQueue requestQueue = Volley.newRequestQueue(MainActivity.this);
         StringRequest stringRequest = new StringRequest(Request.Method.POST, URLs.URL_REGISTER, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
+
                 try {
                     JSONObject obj = new JSONObject(response);
-
-                    if (!obj.getBoolean("error")){
-                        Toast.makeText(MainActivity.this, obj.getString("message"),Toast.LENGTH_SHORT).show();
-
-                        //getting the user from the response
-                        JSONObject userJson = obj.getJSONObject("user");
-
-                        //creating a new user object
-                        User user = new User(
-                                userJson.getString("name"),
-                                userJson.getString("email")
-                        );
-
-                        //storing the user in shared preferences
-                        SharedPrefManager.getInstance(getApplicationContext()).userLogin(user);
-
-                        //starting the profile activity
-                        finish();
-                        startActivity(new Intent(MainActivity.this, TeacherDashboard.class));
-                    } else {
-                        Toast.makeText(getApplicationContext(), obj.getString("message"), Toast.LENGTH_SHORT).show();
+                    boolean error = obj.getBoolean("error");
+                    //if no error response
+                    if (error == false){
+                        Toast.makeText(MainActivity.this, obj.getString("message"), Toast.LENGTH_SHORT).show();
+                        startActivity(new Intent( MainActivity.this, TeacherDashboard.class));
                     }
-
-                }catch (JSONException e){
+                    //if error response
+                    if(error==true) {
+                        Toast.makeText(MainActivity.this, obj.getString("message"), Toast.LENGTH_SHORT).show();
+                        loading.setVisibility(View.GONE);
+                        btn_signup.setVisibility(View.VISIBLE);
+                    }
+                } catch (JSONException e) {
                     e.printStackTrace();
-                    Toast.makeText(MainActivity.this,"Register Error" +e.toString(),Toast.LENGTH_SHORT).show();
-                    loading.setVisibility(View.GONE);
-                    btn_signup.setVisibility(View.VISIBLE);
                 }
             }
         }, new Response.ErrorListener() {
@@ -148,15 +129,23 @@ public class MainActivity extends AppCompatActivity {
         })
         {
             @Override
-            protected Map<String, String> getParams() throws AuthFailureError {
+            protected Map<String, String> getParams(){
                 Map<String, String> params = new HashMap<>();
-                getParams().put("name", name);
-                getParams().put("email", email);
-                getParams().put("password", password);
+                params.put("name", name);
+                params.put("email", email);
+                params.put("password", password);
+                return params;
+            }
+            public Map<String, String> getHeaders() throws AuthFailureError{
+                Map<String,String> params = new HashMap<>();
+                params.put("content type","application/x-www-form-urlencoded");
                 return params;
             }
         };
 
-        VolleySingleton.getInstance(this).addToRequestQueue(stringRequest);
+        requestQueue.add(stringRequest);
+
+
+
     }
 }
