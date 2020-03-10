@@ -24,12 +24,12 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/logo"
         android:hint="Admission No"
-        app:hintTextColor="@color/colorButton"
+        app:hintTextColor="@color/colorHintTextColor"
         android:focusedByDefault="true">
         <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/admission"
+            android:id="@+id/etadmission"
             android:inputType="textCapWords"
-            android:textColor="@color/colorText"
+            android:textColor="@color/colorTextInput"
             android:layout_width="match_parent"
             android:layout_height="match_parent"/>
     </com.google.android.material.textfield.TextInputLayout>
@@ -42,11 +42,11 @@
         android:layout_below="@+id/layoutadmission"
         app:passwordToggleEnabled="true"
         android:hint="Password"
-        app:hintTextColor="@color/colorButton">
+        app:hintTextColor="@color/colorHintTextColor">
         <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/password"
+            android:id="@+id/etpassword"
             android:inputType="textPassword"
-            android:textColor="@color/colorText"
+            android:textColor="@color/colorTextInput"
             android:layout_width="match_parent"
             android:layout_height="match_parent"/>
     </com.google.android.material.textfield.TextInputLayout>
