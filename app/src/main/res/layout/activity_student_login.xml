@@ -28,7 +28,7 @@
         android:focusedByDefault="true">
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/etadmission"
-            android:inputType="textCapWords"
+            android:inputType="textCapCharacters"
             android:textColor="@color/colorTextInput"
             android:layout_width="match_parent"
             android:layout_height="match_parent"/>
